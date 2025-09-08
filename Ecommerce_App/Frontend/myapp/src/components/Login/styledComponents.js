@@ -113,3 +113,10 @@ export const LoginButton = styled.button`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 `;
+
+ export const ErrorMsg = styled.p`
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+`;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const HomeSection = styled.div`
   display: flex;
+  padding: 20px;
 `;
 
 export const CategorySection = styled.div`
@@ -12,8 +13,7 @@ export const CategoryHeader = styled.h1`
   font-size: 24px;
   color: green;
   font-weight: bold;
-  margin-right: 17px;
-  
+  margin-left: 40px;
 `;
 
 export const CategoryContainer = styled.ul`
@@ -22,27 +22,26 @@ export const CategoryContainer = styled.ul`
 `;
 
 export const CategoryItem = styled.li`
-    list-style-type: none;
-    self-align: flex-start;
-    text-align: start;
-    `;
+  list-style-type: none;
+  self-align: flex-start;
+  text-align: start;
+`;
 
-    export const CategoryBtn=styled.button`
-    background-color: transparent;
-    color: black;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    font-weight: 700;
-    margin-top: 10px;
-    `;
+export const CategoryBtn = styled.button`
+  background-color: transparent;
+  color: black;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  font-weight: 700;
+  margin-top: 10px;
+`;
 
-    export const ProductsSection=styled.div`
-    width: 80%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    
-    `;
+export const ProductsSection = styled.div`
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+`;

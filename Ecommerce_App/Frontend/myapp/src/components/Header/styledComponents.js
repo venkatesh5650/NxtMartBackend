@@ -37,4 +37,5 @@ export const NavButton = styled.button`
   margin-right: 20px;
   border: none;
   outline: none;
+  cursor: pointer;
 `;

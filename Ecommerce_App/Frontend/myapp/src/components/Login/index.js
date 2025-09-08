@@ -14,11 +14,14 @@ import {
   AllInputContainer,
   Label,
   InputContainer,
+  ErrorMsg,
 } from "./styledComponents";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [failureMsg, setFailureMsg] = useState("");
+
   const navigate = useNavigate();
 
   const redirectHome = (jwtToken) => {
@@ -41,13 +44,17 @@ const Login = () => {
       },
       body: JSON.stringify(userDetails),
     };
-    const response = await fetch(url, options);
+    try{    const response = await fetch(url, options);
+    const data = await response.json();
     if (response.ok === true) {
-      const data = response.json();
-      return redirectHome(data.jwt_token);
+      redirectHome(data.jwt_token);
     } else {
-      console.log("Login Failed");
+      setFailureMsg(data.error_msg);
     }
+  }catch(error){
+    console.log("Something Went Wrong Try Again:", error);
+  }
+}
 
     return (
       <div>
@@ -84,6 +91,7 @@ const Login = () => {
                   />
                 </InputContainer>
                 <LoginButton type="submit">Login</LoginButton>
+                {failureMsg && <ErrorMsg>{failureMsg}</ErrorMsg>}
               </AllInputContainer>
             </LoginForm>
           </LoginCard>
@@ -91,6 +99,6 @@ const Login = () => {
       </div>
     );
   };
-};
+
 
 export default Login;

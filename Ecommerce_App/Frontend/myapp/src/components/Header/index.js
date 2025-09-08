@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import {
   Logo,
   HeaderContainer,
@@ -7,6 +9,13 @@ import {
 } from "./styledComponents";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const onClickLogout = () => {
+    localStorage.removeItem("jwt_token");
+    navigate("/login");
+  };
+
   return (
     <HeaderContainer>
       <Logo
@@ -21,7 +30,7 @@ const Header = () => {
           <NavButton>Cart</NavButton>
         </NavItem>
         <NavItem>
-          <NavButton>Logout</NavButton>
+          <NavButton onClick={onClickLogout}>Logout</NavButton>
         </NavItem>
       </NavContianer>
     </HeaderContainer>

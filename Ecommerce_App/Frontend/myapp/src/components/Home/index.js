@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect} from "react";
 
 import Header from "../Header";
 
@@ -9,7 +9,7 @@ import {
   CategoryContainer,
   CategoryItem,
   CategoryBtn,
-  ProductsSection
+  ProductsSection,
 } from "./styledComponents";
 
 const categoriesList = [
@@ -27,28 +27,31 @@ const categoriesList = [
 ];
 
 const Home = () => {
+  const [productsData, setProductsData] = useState([]);
+  const jwtToken = localStorage.getItem("jwt_token");
 
-  const [productsData,setProductsData]=useState([]);
-  const jwtToken=localStorage.getItem("jwt_token");
+  useEffect(() => {
+    getProducts();
+  },);
 
-  const getProducts = async() => {
-    const url="http://localhost:5000/products/"
-    const options={
-      method:"GET",
-      headers:{
-        Authorization:"Bearer "+jwtToken,
-      }}
+  const getProducts = async () => {
+    const url = "http://localhost:5000/products/";
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer  " + jwtToken,
+      },
+    };
 
-      const response=await fetch(url,options);
-      if(response.ok){
-        const data=await response.json();
-        setProductsData(data);
-        console.log(data);
-    }
-    else{
+    const response = await fetch(url, options);
+    if (response.ok) {
+      const data = await response.json();
+      setProductsData(data);
+      console.log(data);
+    } else {
       console.log("Failed to fetch products");
     }
-  }
+  };
 
   return (
     <div>
@@ -64,8 +67,8 @@ const Home = () => {
             ))}
           </CategoryContainer>
         </CategorySection>
-        <ProductsSection> 
-            <h1>Products</h1>
+        <ProductsSection>
+          <h1>Products</h1>
         </ProductsSection>
       </HomeSection>
     </div>
