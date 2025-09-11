@@ -18,5 +18,5 @@ Content-Type: application/json
 } 
 
 ### get all products/
-GET http://localhost:5000/products/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc1NzIyOTIyMiwiZXhwIjoxNzU3MjMyODIyfQ.FlQ2R4410ozZeEOxw92HZT1Rz3RrCOAJzG7RAxp5q2o
+GET http://localhost:5000/api/products/?category=All
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImlhdCI6MTc1NzM0MzkyMCwiZXhwIjoxNzU3MzQ3NTIwfQ.pmTGmANtMPet80cnfp9-bcuM0V11xZ6ynMF50Qy0QXo

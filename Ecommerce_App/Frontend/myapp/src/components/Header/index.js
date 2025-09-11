@@ -16,6 +16,14 @@ const Header = () => {
     navigate("/login");
   };
 
+  const directToCart = () => {
+    navigate("/cart");
+  };
+
+  const directToHome = () => {
+    navigate("/");
+  };
+
   return (
     <HeaderContainer>
       <Logo
@@ -24,10 +32,10 @@ const Header = () => {
       />
       <NavContianer>
         <NavItem>
-          <NavButton>Home</NavButton>
+          <NavButton onClick={directToHome}>Home</NavButton>
         </NavItem>
         <NavItem>
-          <NavButton>Cart</NavButton>
+          <NavButton onClick={directToCart}>Cart</NavButton>
         </NavItem>
         <NavItem>
           <NavButton onClick={onClickLogout}>Logout</NavButton>

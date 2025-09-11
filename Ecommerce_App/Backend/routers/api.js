@@ -1,28 +1,35 @@
 const express = require("express");
 const Database = require("better-sqlite3");
-const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 const db = new Database("./Products.db");
 
 // Get all products
-router.get("/products", authMiddleware, (req, res) => {
+router.get("/products", (req, res) => {
   const {
     search_q = "",
-    category = "",
+    category = "All",
     order_by = "id",
     order = "ASC",
   } = req.query;
 
-  const query = `SELECT * FROM products where category LIKE ? order by ${order_by} ${order}`;
+  try {
+    let query;
+    let rows;
 
-  db.all(query, [`%${category}%`], (err, rows) => {
-    if (err) {
-      console.error(err.message);
-      return res.status(500).json({ error: "Failed to retrieve products" });
+    if (category === "All" || category.trim() === "") {
+      query = `SELECT * FROM Products ORDER BY ${order_by} ${order}`;
+      rows = db.prepare(query).all();
+    } else {
+      query = `SELECT * FROM Products WHERE category LIKE ? ORDER BY ${order_by} ${order}`;
+      rows = db.prepare(query).all(`%${category}%`);
     }
+
     res.status(200).json(rows);
-  });
+  } catch (err) {
+    console.error("DB Error:", err.message);
+    res.status(500).json({ error: "Failed to retrieve products" });
+  }
 });
 
 module.exports = router;

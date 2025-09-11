@@ -1,32 +1,49 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const Database = require("better-sqlite3");
 
-const authRoutes = require("./routers/auth");
-const productRoutes = require("./routers/api");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", authRoutes);
-app.use("/", productRoutes);
+// ✅ Connect DB
+const db = new Database("./Products.db");
+console.log("✅ SQLite DB Connected");
 
-const db = require("./Database/db");
+// ✅ Create tables if not exists
+db.prepare(
+  `CREATE TABLE IF NOT EXISTS Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`
+).run();
 
-// --- Remove db.serialize() and run code directly ---
+db.prepare(
+  `CREATE TABLE IF NOT EXISTS Products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    category TEXT,
+    quantity TEXT,
+    price REAL NOT NULL,
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`
+).run();
 
-// Clear products table
-const products = db.prepare(
-  "INSERT INTO products (name, category, price, quantity, image_url) VALUES (?, ?, ?, ?, ?)"
+// ✅ Product insert statement
+const insertProduct = db.prepare(
+  "INSERT INTO Products (name, category, price, quantity, image_url) VALUES (?, ?, ?, ?, ?)"
 );
 
-// Helper: generate Heroku-safe Unsplash URL
-
-// Define your product data without image URLs
+// ✅ Sample data
 const productData = [
   // Fruits & Vegetables
-
   {
     name: "Apple",
     category: "Fruits & Vegetables",
@@ -75,8 +92,8 @@ const productData = [
     image_url:
       "https://media.istockphoto.com/id/2150710300/photo/overhead-view-of-freshly-sliced-organic-carrots-on-cutting-board.jpg?s=612x612&w=0&k=20&c=ukr4W-a52GLyqT2jshKF8DHEkPkmvjrP5-cSE0GmZZU=",
   },
-  // Prepared Foods
 
+  // Prepared Foods
   {
     name: "Veg Biryani",
     category: "Prepared Foods",
@@ -125,8 +142,8 @@ const productData = [
     image_url:
       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YnVyZ2VyfGVufDB8fDB8fHww",
   },
-  // Oil
 
+  // Oil
   {
     name: "Sunflower Oil",
     category: "Oil",
@@ -256,16 +273,7 @@ const productData = [
     image_url:
       "https://media.istockphoto.com/id/2162197716/photo/group-of-freshwater-crabs-freshwater-crabs-or-rice-field-crabs-crab-on-the-hand.webp?a=1&b=1&s=612x612&w=0&k=20&c=x1YcvV5UVBwO7O15Z87cXulKMwA6flBSvvfC9FSA8Pw=",
   },
-  {
-    name: "Eggs",
-    category: "Meat & Seafood",
-    price: 70,
-    quantity: "12 pcs",
-    image_url:
-      "https://media.istockphoto.com/id/924323032/photo/wooden-basket-with-eggs.jpg?s=1024x1024&w=is&k=20&c=orLFKxmPgIq7GmCsjF_D2I2NeMk2lD2v8HN6BbFHnYQ=",
-  },
   // Home Needs
-
   {
     name: "Detergent",
     category: "Home Needs",
@@ -313,29 +321,27 @@ const productData = [
     quantity: "1L",
     image_url:
       "https://media.istockphoto.com/id/1345539958/photo/cleaning-parquet-floor-with-wet-mop.webp?a=1&b=1&s=612x612&w=0&k=20&c=8A7cxH8ZDYEYdsjj_1OktmfCB0JHNLn3_QQFg1GB8Ok=",
-  },
-  ,
-  // Beverages
+  }, // Beverages
   {
     name: "Coca Cola",
     category: "Beverages",
     price: 40,
     quantity: "500ml",
-    imageUrl: "https://m.media-amazon.com/images/I/61Ju--N-QoL._AC_UL320_.jpg",
+    image_url: "https://m.media-amazon.com/images/I/61Ju--N-QoL._AC_UL320_.jpg",
   },
   {
     name: "Pepsi",
     category: "Beverages",
     price: 40,
     quantity: "500ml",
-    imageUrl: "https://m.media-amazon.com/images/I/51pGxfs4w1L._AC_UL320_.jpg",
+    image_url: "https://m.media-amazon.com/images/I/51pGxfs4w1L._AC_UL320_.jpg",
   },
   {
     name: "Orange Juice",
     category: "Beverages",
     price: 120,
     quantity: "1L",
-    imageUrl:
+    image_url:
       "https://m.media-amazon.com/images/I/41rksqDZ8cL._SX300_SY300_QL70_FMwebp_.jpg",
   },
   {
@@ -343,30 +349,29 @@ const productData = [
     category: "Beverages",
     price: 130,
     quantity: "1L",
-    imageUrl: "https://m.media-amazon.com/images/I/51TNaTSPSJL._AC_UL320_.jpg",
+    image_url: "https://m.media-amazon.com/images/I/51TNaTSPSJL._AC_UL320_.jpg",
   },
   {
     name: "Tea Pack",
     category: "Beverages",
     price: 250,
     quantity: "500g",
-    imageUrl: "https://m.media-amazon.com/images/I/61JcMMLXlgL._AC_UL320_.jpg",
+    image_url: "https://m.media-amazon.com/images/I/61JcMMLXlgL._AC_UL320_.jpg",
   },
   {
     name: "Coffee Powder",
     category: "Beverages",
     price: 300,
     quantity: "500g",
-    imageUrl: "https://m.media-amazon.com/images/I/61L96Ywi7aL._AC_UL320_.jpg",
+    image_url: "https://m.media-amazon.com/images/I/61L96Ywi7aL._AC_UL320_.jpg",
   },
+  ,
 ];
 
-// Optional: clear products table before inserting to avoid duplicates
-db.exec("DELETE FROM products");
-
-// Insert products into database
+// ✅ Reset and insert sample products
+db.exec("DELETE FROM Products"); // clear old data
 productData.forEach((item) => {
-  products.run(
+  insertProduct.run(
     item.name,
     item.category,
     item.price,
@@ -374,12 +379,17 @@ productData.forEach((item) => {
     item.image_url
   );
 });
+console.log("✅ Sample products inserted");
 
-products.free && products.free(); // Cleanup prepared statement
+// ✅ Routes
+const authRouter = require("./routers/auth");
+const productRouter = require("./routers/api");
 
+app.use("/auth", authRouter);
+app.use("/api", productRouter);
 
-
-db.close();
-// --- Start server ---
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
