@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { MdOutlineDone } from "react-icons/md";
 
 export const CheckoutContainer = styled.div`
-  min-height: 100vh;
+  max-height: 100vh;
+  margin-top:120px;
 `;
 
 export const CheckOuts = styled.div`

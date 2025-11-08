@@ -16,6 +16,10 @@ export const HeaderContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   height: 17vh;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1;
 `;
 
 export const NavContianer = styled.ul`
@@ -38,4 +42,17 @@ export const NavButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
+`;
+
+export const Tagline = styled.p`
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: green; /* rich green for premium feel */
+  font-family: "Poppins", sans-serif;
+  margin: 0 auto;
+  text-align: center;
+  white-space: nowrap;
+  padding-left: 100px;
+
 `;

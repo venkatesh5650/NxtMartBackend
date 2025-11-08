@@ -13,15 +13,16 @@ export const LoginContainer = styled.div`
 `;
 
 export const LoginCard = styled.div`
-  padding:1px;
+  padding: 1px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-   border-radius: 4px;
-   padding-top:15px;
-   padding-bottom:15px;
-   width: 450px;
-   height: 450px;
-  `;
+  border-radius: 4px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 450px;
+  height: 450px;
+  text-align: center;
+`;
 export const Logo = styled.img`
 
   width: 119px;
@@ -40,8 +41,8 @@ export const LoginTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  margin:0;
-  margin-top:10px;
+  margin: 0;
+  margin-top: 10px;
 `;
 
 export const LoginForm = styled.form`
@@ -53,50 +54,43 @@ export const LoginForm = styled.form`
   padding: 30px;
   border-radius: 8px;
   margin-left: auto;
-    margin-right: auto;
- 
+  margin-right: auto;
 `;
-
-
 
 export const AllInputContainer = styled.div`
   text-align: left;
-  margin:0;
+  margin: 0;
 `;
 
 export const InputContainer = styled.div`
- display: flex;
- flex-direction: row;
-justify-content: space-around;
-align-items: center;
-height: 50px;
-width:100%;
-margin-top:10px;
-margin-bottom:10px;
-border: 1px solid #ccc;
-border-radius: 7px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
 `;
 
 export const LoginInput = styled.input`
-    height: 24px;
-    width: 70%;
-    padding: 10px;
-    color:black;
-    border:none;
-    outline:none;
-    border-radius: 7px;
-    font-size: 18px;
-    
-    `;
+  height: 24px;
+  width: 70%;
+  padding: 10px;
+  color: black;
+  border: none;
+  outline: none;
+  border-radius: 7px;
+  font-size: 18px;
+`;
 
 export const Label = styled.label`
-    font-size: 16px;
-    font-weight: 400;
-    align-self: flex-start;
-    
-    
- `;
-
+  font-size: 16px;
+  font-weight: 400;
+  align-self: flex-start;
+`;
 
 export const LoginButton = styled.button`
   padding: 10px;
@@ -107,14 +101,29 @@ export const LoginButton = styled.button`
   margin-top: 20px;
   font-size: 16px;
   cursor: pointer;
-   width: 100%;
+  width: 100%;
   &:hover {
     background-color: black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 `;
 
- export const ErrorMsg = styled.p`
+export const ButtonRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 100%;
+  gap: 12px; /* spacing between buttons */
+`;
+
+export const SignupButton = styled(LoginButton)`
+  background-color: black; /* slightly different or same */
+  &:hover {
+    background-color: green;
+  }
+`;
+
+export const ErrorMsg = styled.p`
   color: red;
   font-size: 14px;
   margin-top: 10px;

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaFacebook,
+  FaPinterest,
+  FaTwitter,
+  FaInstagram,
+} from "react-icons/fa";
 
 import Header from "../Header";
 import CartItem from "../CartItem";
@@ -63,7 +69,10 @@ const Cart = () => {
   }, [Cartlist]);
 
   const navigate = useNavigate();
-  const directToCheckout = () => navigate("/Checkout");
+  const directToCheckout = () => {
+    navigate("/Checkout");
+    localStorage.removeItem("cartList");
+  };
 
   return (
     <CartContainer>
@@ -93,9 +102,7 @@ const Cart = () => {
           <BillMsg>
             Total ({cartLength} items): ₹ {TotalAmount}/-
           </BillMsg>
-          <CheckoutButton onClick={directToCheckout}>
-            Checkout
-          </CheckoutButton>
+          <CheckoutButton onClick={directToCheckout}>Checkout</CheckoutButton>
         </BillContainer>
       )}
       <QueryContainer>
@@ -104,16 +111,24 @@ const Cart = () => {
             For any queries, contact +91-9666677770 or mail us
             help@nxtmart.co.in
           </QueryText>
+
           <MediaContainer>
-            <Media>FB</Media>
-            <Media>Pinterest</Media>
-            <Media>Twitter</Media>
-            <Media>Instagram</Media>
+            <Media>
+              <FaFacebook />
+            </Media>
+            <Media>
+              <FaPinterest />
+            </Media>
+            <Media>
+              <FaTwitter />
+            </Media>
+            <Media>
+              <FaInstagram />
+            </Media>
           </MediaContainer>
         </ContactMedia>
-        <CopyRight>
-          Copyright @ 2023 NxtMart Groceries Supply Pvt Ltd
-        </CopyRight>
+
+        <CopyRight>Copyright © 2023 NxtMart Groceries Supply Pvt Ltd</CopyRight>
       </QueryContainer>
     </CartContainer>
   );

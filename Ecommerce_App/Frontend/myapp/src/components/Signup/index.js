@@ -29,6 +29,10 @@ const SignUp = () => {
 
   const navigate = useNavigate(); // ✅ useNavigate hook
 
+  const RedirectToLogin = () => {
+    navigate("/login"); // ✅ navigate to login page
+  };
+
   const handleSignUp = async (event) => {
     event.preventDefault();
     // Handle login logic here
@@ -52,7 +56,7 @@ const SignUp = () => {
       navigate("/", { replace: true }); // ✅ replaces history.replace
       alert("User Registered Successfully");
     } else {
-      alert(data.error_msg);
+      alert(data.error);
     }
   };
 
@@ -128,7 +132,7 @@ const SignUp = () => {
                 />
               </InputContainer>
               <SignUpButton type="submit">SignUp</SignUpButton>
-              <LoginButton type="submit">Login</LoginButton>
+              <LoginButton type="button" onClick={RedirectToLogin}>Login</LoginButton>
             </AllInputContainer>
           </SignUpForm>
         </SignUpCard>

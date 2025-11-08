@@ -17,6 +17,8 @@ const Checkout = () => {
 
   const RedirectToHome = () => {
     navigate("/");
+    
+
   };
   return (
     <CheckoutContainer>

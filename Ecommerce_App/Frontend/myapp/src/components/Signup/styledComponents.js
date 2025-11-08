@@ -5,6 +5,7 @@ export const SignUpContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   height: 100vh;
   background-color: #f5f5f5;
   padding: 20px;
@@ -16,10 +17,10 @@ export const SignUpCard = styled.div`
   padding: 1px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  border-radius: 7px;
   padding-top: 15px;
   padding-bottom: 15px;
-  width: 450px;
+  width: 400px;
   height: 600px;
 
 `;

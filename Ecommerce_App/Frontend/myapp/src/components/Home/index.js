@@ -54,14 +54,14 @@ const Home = () => {
         addCartMsg: "Added to Cart",
       });
     }
-    setCartList(updatedCart)
+    setCartList(updatedCart);
     localStorage.setItem("cartList", JSON.stringify(updatedCart));
   };
 
   useEffect(() => {
     const getProducts = async () => {
       const url = `http://localhost:5000/api/products/?category=${activeCategory}`;
-      const jwtToken = localStorage.getItem("jwt_token");
+      // const jwtToken = localStorage.getItem("jwt_token");
       const options = {
         method: "GET",
         headers: {

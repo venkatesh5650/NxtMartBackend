@@ -64,4 +64,5 @@ export const ProductContainer = styled.div`
 export const HomeContainer = styled.div`
   height: 100vh;
   width: 100vw;
+  margin-top:100px;
 `;
