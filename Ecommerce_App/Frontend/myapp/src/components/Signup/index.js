@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { TbLockPassword } from "react-icons/tb";
 import { CiUser } from "react-icons/ci";
-import { useNavigate } from "react-router-dom"; // ✅ import
+import { useNavigate } from "react-router-dom";
 
 import {
   SignUpContainer,
@@ -11,12 +11,13 @@ import {
   SignUpTitle,
   SignUpForm,
   SignUpInput,
-  SignUpButton,
   AllInputContainer,
   Label,
   InputContainer,
   Row,
   Checkbox,
+  ButtonRow,
+  SignUpButton,
   LoginButton,
 } from "./styledComponents";
 
@@ -27,120 +28,81 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate(); // ✅ useNavigate hook
+  const navigate = useNavigate();
 
   const RedirectToLogin = () => {
-    navigate("/login"); // ✅ navigate to login page
+    navigate("/login");
   };
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    // Handle login logic here
-    const userDetails = {
-      name,
-      username,
-      password,
-      email,
-    };
+    const userDetails = { name, username, password, email };
     const url = "https://nxtmartbackend-5.onrender.com/auth/register";
 
-    const options = {
+    const response = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userDetails),
-    };
-    const response = await fetch(url, options);
+    });
+
     const data = await response.json();
     if (response.ok) {
-      navigate("/", { replace: true }); // ✅ replaces history.replace
       alert("User Registered Successfully");
+      navigate("/", { replace: true });
     } else {
       alert(data.error);
     }
   };
 
   return (
-    <div>
-      <SignUpContainer>
-        <SignUpCard>
-          <Logo
-            src="https://res.cloudinary.com/dpiu7mohv/image/upload/v1757246439/6fad20838855997d164dd88d885fad87bdfa3be6_3_sebipw.png"
-            alt="Logo"
-          />
-          <SignUpTitle>Signup</SignUpTitle>
-          <SignUpForm onSubmit={handleSignUp}>
-            <AllInputContainer>
-              <Label htmlFor="username">Name</Label>
-              <InputContainer>
-                <CiUser size={20} color="gray" />
-                <SignUpInput
-                  type="text"
-                  placeholder="Enter Your Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  id="username"
-                />
-              </InputContainer>
-              <Label htmlFor="username">Username</Label>
-              <InputContainer>
-                <CgProfile size={20} color="gray" />
-                <SignUpInput
-                  type="text"
-                  placeholder="Enter Your Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  id="username"
-                />
-              </InputContainer>
+    <SignUpContainer>
+      <SignUpCard>
+        <Logo src="https://res.cloudinary.com/dpiu7mohv/image/upload/v1757246439/6fad20838855997d164dd88d885fad87bdfa3be6_3_sebipw.png" />
+        <SignUpTitle>Signup</SignUpTitle>
 
-              <Label htmlFor="username">Password</Label>
-              <br />
-              <InputContainer>
-                <TbLockPassword size={20} color="gray" />
-                <SignUpInput
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter Your Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </InputContainer>
-              <Row>
-                <Checkbox
-                  id="showPwd"
-                  type="checkbox"
-                  checked={showPassword}
-                  onChange={(e) => setShowPassword(e.target.checked)}
-                />
-                <label
-                  htmlFor="showPwd"
-                  style={{ cursor: "pointer", color: "#334155", fontSize: 14 }}
-                >
-                  Show password
-                </label>
-              </Row>
+        <SignUpForm onSubmit={handleSignUp}>
+          <AllInputContainer>
+            <Label>Name</Label>
+            <InputContainer>
+              <CiUser size={20} color="gray" />
+              <SignUpInput value={name} onChange={(e) => setName(e.target.value)} />
+            </InputContainer>
 
-              <Label htmlFor="username">Email</Label>
-              <InputContainer>
-                <CgProfile size={20} color="gray" />
-                <SignUpInput
-                  type="text"
-                  placeholder="Enter Your Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  id="username"
-                />
-              </InputContainer>
+            <Label>Username</Label>
+            <InputContainer>
+              <CgProfile size={20} color="gray" />
+              <SignUpInput value={username} onChange={(e) => setUsername(e.target.value)} />
+            </InputContainer>
+
+            <Label>Password</Label>
+            <InputContainer>
+              <TbLockPassword size={20} color="gray" />
+              <SignUpInput
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </InputContainer>
+
+            <Row>
+              <Checkbox type="checkbox" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
+              <label style={{ cursor: "pointer", fontSize: 14 }}>Show password</label>
+            </Row>
+
+            <Label>Email</Label>
+            <InputContainer>
+              <CgProfile size={20} color="gray" />
+              <SignUpInput value={email} onChange={(e) => setEmail(e.target.value)} />
+            </InputContainer>
+
+            <ButtonRow>
               <SignUpButton type="submit">SignUp</SignUpButton>
-              <LoginButton type="button" onClick={RedirectToLogin}>
-                Login
-              </LoginButton>
-            </AllInputContainer>
-          </SignUpForm>
-        </SignUpCard>
-      </SignUpContainer>
-    </div>
+              <LoginButton type="button" onClick={RedirectToLogin}>Login</LoginButton>
+            </ButtonRow>
+          </AllInputContainer>
+        </SignUpForm>
+      </SignUpCard>
+    </SignUpContainer>
   );
 };
 

@@ -2,12 +2,9 @@ import styled from "styled-components";
 
 export const SignUpContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
-  height: 100vh;
-  background-color: #f5f5f5;
+  align-items: center;
+  min-height: 100vh;
   padding: 20px;
   background-image: url("https://res.cloudinary.com/dpiu7mohv/image/upload/v1756465869/Background_po1fpj.png");
   background-size: cover;
@@ -22,23 +19,24 @@ export const SignUpCard = styled.div`
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
-  padding: 20px;
-  width: 400px;
-  max-height: 95vh;
+  padding: 16px;
+  width: 380px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
 
-  /* ✅ Mobile Responsive */
   @media (max-width: 600px) {
-    width: 90%;
-    padding: 15px;
+    width: 88%;
+    padding: 12px;
   }
 `;
 
 export const Logo = styled.img`
-  width: 70px;
-  height: 40px;
+  width: 90px;
+  height: 60px;
+  margin: 0 auto;
+  display: block;
 `;
 
 export const SignUpTitle = styled.h2`
@@ -61,18 +59,21 @@ export const SignUpForm = styled.form`
 
 export const AllInputContainer = styled.div`
   width: 100%;
-  text-align: left;
+  text-align: left; /* ✅ labels remain left aligned */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ inputs + buttons centered */
 `;
 
 export const InputContainer = styled.div`
   display: flex;
   align-items: center;
-  height: 45px;
-  width: 90%;
-  margin: 10px 0;
+  height: 40px;
+  width: 85%; /* ✅ Center width */
+  margin: 8px auto; /* ✅ Center block */
   border: 1px solid #ccc;
-  border-radius: 7px;
-  padding: 0 10px;
+  border-radius: 6px;
+  padding: 0 8px;
 `;
 
 export const SignUpInput = styled.input`
@@ -90,13 +91,16 @@ export const SignUpInput = styled.input`
 export const Label = styled.label`
   font-size: 15px;
   font-weight: 500;
+  width: 85%; /* ✅ Label aligns above its input */
+  margin-top: 6px;
 `;
 
 export const Row = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 10px 0 18px;
+  width: 85%; /* ✅ Align with inputs */
+  margin: 6px auto 14px;
 `;
 
 export const Checkbox = styled.input`
@@ -105,16 +109,22 @@ export const Checkbox = styled.input`
   accent-color: #3b82f6;
 `;
 
+export const ButtonRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 85%; /* ✅ Matches input alignment */
+  margin-top: 15px;
+`;
+
 export const SignUpButton = styled.button`
-  padding: 12px;
+  padding: 10px;
   background-color: green;
   color: white;
   border: none;
   border-radius: 5px;
-  margin-top: 15px;
   font-size: 16px;
   cursor: pointer;
-  width: 100%;
+  width: 45%;
 
   &:hover {
     background-color: black;
@@ -122,15 +132,14 @@ export const SignUpButton = styled.button`
 `;
 
 export const LoginButton = styled.button`
-  padding: 12px;
+  padding: 10px;
   background-color: black;
   color: white;
   border: none;
   border-radius: 5px;
-  margin-top: 12px;
   font-size: 16px;
   cursor: pointer;
-  width: 100%;
+  width: 45%;
 
   &:hover {
     background-color: green;
