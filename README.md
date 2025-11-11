@@ -128,6 +128,6 @@ http://localhost:3000
 ![Home Page](./screenshots/home.png)
 ![Product List](./screenshots/products.png)
 ![Cart Page](./screenshots/cart.png)
-![Signup Form](../Frontend/myapp/public/screenshots/signup.png)
+![Signup Form](./Ecommerce_App/Frontend/myapp/public/screenshots/signup.png)
 
 ```
