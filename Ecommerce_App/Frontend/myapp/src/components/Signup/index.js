@@ -37,7 +37,7 @@ const SignUp = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     const userDetails = { name, username, password, email };
-    const url = "https://nxtmartbackend-5.onrender.com/auth/register";
+    const url = "https://nxtmartfb-2.onrender.com/auth/register";
 
     const response = await fetch(url, {
       method: "POST",

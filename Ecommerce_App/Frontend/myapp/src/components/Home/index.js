@@ -50,7 +50,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch(
-        `https://nxtmartbackend-5.onrender.com/api/products/?category=${activeCategory}`,
+        `https://nxtmartfb-2.onrender.com/api/products/?category=${activeCategory}`,
         {
           headers: {
             Authorization:

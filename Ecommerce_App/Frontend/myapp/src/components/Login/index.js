@@ -49,7 +49,7 @@ const Login = () => {
     event.preventDefault();
     const userDetails = { username, password };
 
-    const url = "https://nxtmartbackend-5.onrender.com/auth/login";
+    const url = "https://nxtmartfb-2.onrender.com/auth/login";
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
