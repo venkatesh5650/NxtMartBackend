@@ -18,6 +18,13 @@ router.get("/products", authMiddleware, (req, res) => {
   const params = [];
   const whereClauses = [];
 
+  console.log("SEARCH DEBUG:", {
+    search_q,
+    category,
+    whereClauses,
+    params,
+  });
+
   // CATEGORY FILTER (only if no search is happening)
   if (category.toLowerCase() !== "all" && search_q.trim() === "") {
     whereClauses.push("category LIKE ?");
