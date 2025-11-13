@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import sqlite3 from "sqlite3";
-import db from "../databases/db.js";
+import db from "../database_folder/db.js";
 
 dotenv.config();
 sqlite3.verbose();

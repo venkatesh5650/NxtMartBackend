@@ -1,6 +1,6 @@
 import express from "express";
 import sqlite3 from "sqlite3";
-import db from "../databases/db.js";
+import db from "../database_folder/db.js";
 import authMiddleware from "../middleware/auth.js";
 
 sqlite3.verbose();
