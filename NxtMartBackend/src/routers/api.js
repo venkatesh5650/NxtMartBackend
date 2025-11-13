@@ -12,7 +12,7 @@ router.get("/products", (req, res) => {
     category = "All",
     order_by = "id",
     order = "ASC",
-  } = req.query;
+  } = req.query;g
 
   let query = `SELECT * FROM Products`;
   const params = [];
