@@ -13,9 +13,11 @@ router.get("/products", (req, res) => {
     order_by = "id",
     order = "ASC",
   } = req.query;
-  g;
 
-  let query = `SELECT * FROM Products`;
+  // ❌ Remove accidental 'g;' bug
+  // g;  <-- remove this line
+
+  let query = `SELECT * FROM Products`;   // table name must match migrations
   const params = [];
   const whereClauses = [];
 
@@ -26,7 +28,7 @@ router.get("/products", (req, res) => {
     params,
   });
 
-  // CATEGORY FILTER (only if no search is happening)
+  // CATEGORY FILTER
   if (category.toLowerCase() !== "all") {
     whereClauses.push("category = ?");
     params.push(category);
@@ -38,13 +40,19 @@ router.get("/products", (req, res) => {
     params.push(`%${search_q}%`);
   }
 
-  // Apply WHERE conditions
+  // APPLY WHERE
   if (whereClauses.length > 0) {
     query += " WHERE " + whereClauses.join(" AND ");
   }
 
-  // Sorting
-  query += ` ORDER BY ${order_by} ${order}`;
+  // ⭐ SECURITY FIX: allow only safe columns to sort
+  const safeOrderByColumns = ["id", "price", "name", "category"];
+  const safeOrderDirections = ["ASC", "DESC"];
+
+  const finalOrderBy = safeOrderByColumns.includes(order_by) ? order_by : "id";
+  const finalOrder = safeOrderDirections.includes(order) ? order : "ASC";
+
+  query += ` ORDER BY ${finalOrderBy} ${finalOrder}`;
 
   console.log("FINAL QUERY:", query);
   console.log("PARAMS:", params);
@@ -58,6 +66,7 @@ router.get("/products", (req, res) => {
   });
 });
 
+// PRODUCT DETAILS
 router.get("/products/:id", authMiddleware, (req, res) => {
   const { id } = req.params;
 

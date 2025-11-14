@@ -6,6 +6,7 @@ import db from "./src/database_folder/db.js";
 import productData from "./src/data/products.js";
 import authRouter from "./src/routers/auth.js";
 import productRouter from "./src/routers/api.js";
+import runMigrations from "./src/migrate-description.js";
 
 dotenv.config();
 
@@ -25,48 +26,24 @@ app.use(
 
 app.use(express.json());
 
-//  Insert products only if the table is empty
-db.serialize(() => {
-  db.get("SELECT COUNT(*) AS count FROM Products", (err, row) => {
-    if (err) {
-      console.error("Error checking Products table:", err.message);
-      return;
-    }
-
-    if (row.count === 0) {
-      console.log("Products table empty. Inserting sample data...");
-
-      const insertQuery = `
-        INSERT INTO Products (name, category, price, quantity, image_url)
-        VALUES (?, ?, ?, ?, ?)
-      `;
-
-      for (const item of productData) {
-        db.run(insertQuery, [
-          item.name,
-          item.category,
-          item.price,
-          item.quantity,
-          item.image_url,
-        ]);
-      }
-
-      console.log("Sample products inserted successfully!");
-    } else {
-      console.log(
-        `Products already exist (${row.count} records) — skipping insert.`
-      );
-    }
-  });
-});
-
-
-
 //  Routers
 app.use("/auth", authRouter);
 app.use("/api", productRouter);
 
+const startServer = async () => {
+  try {
+    console.log("⏳ Running migrations...");
+    await runMigrations();
+    console.log("✅ Migrations complete!");
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    // Now you can safely start Express
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  } catch (err) {
+    console.error("❌ Migration error:", err);
+    process.exit(1);
+  }
+};
+
+// Start the server after migrations
+startServer();
