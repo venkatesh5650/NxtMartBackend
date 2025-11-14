@@ -17,7 +17,7 @@ router.get("/products", (req, res) => {
   // ❌ Remove accidental 'g;' bug
   // g;  <-- remove this line
 
-  let query = `SELECT * FROM Products`;   // table name must match migrations
+  let query = `SELECT * FROM Products`; // table name must match migrations
   const params = [];
   const whereClauses = [];
 
@@ -67,7 +67,7 @@ router.get("/products", (req, res) => {
 });
 
 // PRODUCT DETAILS
-router.get("/products/:id", authMiddleware, (req, res) => {
+router.get("/products/:id", (req, res) => {
   const { id } = req.params;
 
   const query = "SELECT * FROM Products WHERE id = ?";

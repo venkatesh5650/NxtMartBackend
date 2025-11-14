@@ -33,7 +33,6 @@ const runMigrations = () => {
           quantity TEXT,
           price REAL NOT NULL,
           image_url TEXT,
-          description TEXT,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`,
         (err) => {
@@ -44,10 +43,36 @@ const runMigrations = () => {
         }
       );
 
-      // 3️⃣ Insert sample products if table is empty
+      // 3️⃣ Add description column if not exists
+      db.run(
+        `ALTER TABLE Products ADD COLUMN description TEXT`,
+        (err) => {
+          if (err && !err.message.includes("duplicate column")) {
+            console.error("❌ Error adding description column:", err.message);
+          } else {
+            console.log("⭐ Description column exists or added.");
+          }
+        }
+      );
+
+      // 4️⃣ Update existing rows (old products without description)
+      db.run(
+        `UPDATE Products
+         SET description = 'This is a premium quality product available at NxMart.'
+         WHERE description IS NULL`,
+        (err) => {
+          if (err) {
+            console.error("❌ Error updating old descriptions:", err.message);
+          } else {
+            console.log("📝 Old product descriptions updated.");
+          }
+        }
+      );
+
+      // 5️⃣ Insert sample products only if table is empty
       db.get("SELECT COUNT(*) AS count FROM Products", (err, row) => {
         if (err) {
-          console.error("❌ Error checking Products:", err.message);
+          console.error("❌ Error checking Products table:", err.message);
           return reject(err);
         }
 
@@ -69,6 +94,10 @@ const runMigrations = () => {
               "This is a premium quality product available at NxMart.",
             ]);
           }
+
+          console.log("🎉 Sample products inserted.");
+        } else {
+          console.log(`ℹ️ Products already exist: ${row.count} rows`);
         }
       });
 
