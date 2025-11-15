@@ -1,12 +1,11 @@
-// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import db from "./src/database_folder/db.js";
-import productData from "./src/data/products.js";
-import authRouter from "./src/routers/auth.js";
-import productRouter from "./src/routers/api.js";
-import runMigrations from "./src/migrate-description.js";
+import db from "./src/config/db.js";
+import productData from "./src/data/productData.js";
+import authRouter from "./src/routes/auth.routes.js";
+import productRouter from "./src/routes/products.routes.js";
+import runMigrations from "./src/migrations/migrations.js";
 
 dotenv.config();
 
