@@ -18,10 +18,14 @@ app.use(
       "http://localhost:3000",
       "https://frontend-nxt-mart-ctio.vercel.app",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
+
+// Allow preflight
+app.options("*", cors());
 
 app.use(express.json());
 
