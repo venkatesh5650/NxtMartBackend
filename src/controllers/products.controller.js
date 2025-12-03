@@ -7,7 +7,11 @@ export const getAllProducts = (req, res) => {
     category = "All",
     order_by = "id",
     order = "ASC",
+    page = 1,
+    limit = 10,
   } = req.query;
+
+  const offset = (page - 1) * limit; 
 
   let query = `SELECT * FROM Products`;
   const params = [];
@@ -30,6 +34,11 @@ export const getAllProducts = (req, res) => {
     query += " WHERE " + whereClauses.join(" AND ");
   }
 
+  //  COUNT QUERY FOR TOTAL PRODUCTS (PAGINATION)
+  const countQuery =
+    "SELECT COUNT(*) AS total FROM Products" +
+    (whereClauses.length ? " WHERE " + whereClauses.join(" AND ") : "");
+
   // Safe sorting (security)
   const allowedOrderColumns = ["id", "price", "name", "category"];
   const allowedOrderDirections = ["ASC", "DESC"];
@@ -39,12 +48,34 @@ export const getAllProducts = (req, res) => {
 
   query += ` ORDER BY ${finalOrderBy} ${finalOrder}`;
 
-  db.all(query, params, (err, rows) => {
+  //  LIMIT + OFFSET ADDED (PAGINATION)
+  query += ` LIMIT ? OFFSET ?`;
+  params.push(limit, offset);
+
+  //  First get total products count
+  db.get(countQuery, params.slice(0, params.length - 2), (err, countResult) => {
     if (err) {
-      console.error("DB Error:", err.message);
-      return res.status(500).json({ error: "Failed to retrieve products" });
+      console.error("Count Error:", err.message);
+      return res.status(500).json({ error: "Failed to count products" });
     }
-    res.status(200).json(rows);
+
+    const totalProducts = countResult.total;
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    //  Then get paginated products
+    db.all(query, params, (err, rows) => {
+      if (err) {
+        console.error("DB Error:", err.message);
+        return res.status(500).json({ error: "Failed to retrieve products" });
+      }
+
+      res.status(200).json({
+        products: rows, 
+        totalProducts,
+        totalPages,
+        currentPage: Number(page),
+      });
+    });
   });
 };
 
