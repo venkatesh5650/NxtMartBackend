@@ -33,6 +33,10 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/api", productRouter);
 
+// Lightweight health check used to wake up sleeping server (Render free tier)
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 const startServer = async () => {
   try {
     console.log("⏳ Running migrations...");
