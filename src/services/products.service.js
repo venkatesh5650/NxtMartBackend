@@ -16,7 +16,9 @@ export const getAllProductsService = async (queryParams) => {
 
   const offset = (page - 1) * limit;
 
-  let query = `SELECT * FROM Products`;
+  let query = `SELECT * FROM Products WHERE active = 1`;
+  let countQuery = `SELECT COUNT(*) AS total FROM Products WHERE active = 1`;
+
   let params = [];
   let whereClauses = [];
 
@@ -32,15 +34,10 @@ export const getAllProductsService = async (queryParams) => {
     params.push(`%${search_q}%`);
   }
 
-  // Apply WHERE
   if (whereClauses.length > 0) {
-    query += " WHERE " + whereClauses.join(" AND ");
+    query += " AND " + whereClauses.join(" AND ");
+    countQuery += " AND " + whereClauses.join(" AND ");
   }
-
-  // COUNT Query
-  const countQuery =
-    "SELECT COUNT(*) AS total FROM Products" +
-    (whereClauses.length ? " WHERE " + whereClauses.join(" AND ") : "");
 
   // Safe sorting
   const allowedOrderColumns = ["id", "price", "name", "category"];
@@ -55,10 +52,7 @@ export const getAllProductsService = async (queryParams) => {
   query += ` LIMIT ? OFFSET ?`;
   const paginatedParams = [...params, limit, offset];
 
-  // Step 1 — count total rows
   const totalProducts = await getTotalCount(countQuery, params);
-
-  // Step 2 — fetch paginated data
   const products = await getPaginatedProducts(query, paginatedParams);
 
   const totalPages = Math.ceil(totalProducts / limit);
@@ -70,6 +64,7 @@ export const getAllProductsService = async (queryParams) => {
     currentPage: Number(page),
   };
 };
+
 
 export const getProductByIdService = async (id) => {
   const row = await fetchProductById(id);

@@ -28,6 +28,18 @@ const runMigrations = () => {
         }
       );
 
+      // Add role column to Users
+      db.run(
+        `ALTER TABLE Users ADD COLUMN role TEXT DEFAULT 'USER'`,
+        (err) => {
+          if (err && !err.message.includes("duplicate column")) {
+            console.error("❌ Error adding role column:", err.message);
+          } else {
+            console.log("⭐ Role column exists or added.");
+          }
+        }
+      );
+
       // Create Products table
       db.run(
         `CREATE TABLE IF NOT EXISTS Products (
@@ -47,10 +59,7 @@ const runMigrations = () => {
         }
       );
 
-      /**
-       * Add description column only if it does not already exist.
-       * SQLite throws an error for duplicate columns, so we safely ignore it.
-       */
+      // Add description column
       db.run(`ALTER TABLE Products ADD COLUMN description TEXT`, (err) => {
         if (err && !err.message.includes("duplicate column")) {
           console.error("❌ Error adding description column:", err.message);
@@ -59,10 +68,63 @@ const runMigrations = () => {
         }
       });
 
-      /**
-       * Update existing rows that don't have a description.
-       * This provides meaningful default descriptions based on category.
-       */
+      // Add stock column
+      db.run(`ALTER TABLE Products ADD COLUMN stock INTEGER`, (err) => {
+        if (err && !err.message.includes("duplicate column")) {
+          console.error("❌ Error adding stock column:", err.message);
+        } else {
+          console.log("⭐ Stock column exists or added.");
+        }
+      });
+
+      // Initialize stock if null
+      db.run(`UPDATE Products SET stock = 100 WHERE stock IS NULL`);
+
+      // Create Orders table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS Orders (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER NOT NULL,
+          status TEXT NOT NULL DEFAULT 'CREATED',
+          total REAL NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+
+      // Create OrderItems table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS OrderItems (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          order_id INTEGER,
+          product_id INTEGER,
+          quantity INTEGER,
+          price REAL
+        )
+      `);
+
+      // Create OrderHistory table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS OrderHistory (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          order_id INTEGER,
+          from_status TEXT,
+          to_status TEXT,
+          changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+
+      // Optional Payments table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS Payments (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          order_id INTEGER,
+          status TEXT,
+          payload TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+
+      // Update descriptions
       db.run(
         `UPDATE Products
          SET description =
@@ -79,9 +141,7 @@ const runMigrations = () => {
          WHERE description IS NULL OR LENGTH(description) < 70`
       );
 
-      /**
-       * Insert sample products only when the table is empty.
-       */
+      // Insert sample products only when empty
       db.get("SELECT COUNT(*) AS count FROM Products", (err, row) => {
         if (err) {
           console.error("❌ Error checking Products table:", err.message);
@@ -92,8 +152,8 @@ const runMigrations = () => {
           console.log("📦 Inserting sample products...");
 
           const insertQuery = `
-            INSERT INTO Products (name, category, price, quantity, image_url, description)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO Products (name, category, price, quantity, image_url, description, stock)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
           `;
 
           for (const item of productData) {
@@ -104,6 +164,7 @@ const runMigrations = () => {
               item.quantity,
               item.image_url,
               "This is a premium quality product available at NxMart.",
+              100
             ]);
           }
 

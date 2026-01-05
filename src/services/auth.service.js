@@ -5,21 +5,19 @@ import * as authRepo from "../repositories/auth.repository.js";
 export const registerUserService = async (data) => {
   const { name, username, password, email } = data;
 
-  // Check user exists
   const existingUser = await authRepo.findUserByUsername(username);
   if (existingUser) {
     throw new Error("Username already exists");
   }
 
-  // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Save user
   const userId = await authRepo.createUser({
     name,
     username,
     email,
     password: hashedPassword,
+    role: "USER", // default role
   });
 
   return { userId };
@@ -37,9 +35,9 @@ export const loginUserService = async ({ username, password }) => {
     throw new Error("Invalid username or password");
   }
 
-  // Generate JWT
+  // Generate JWT with role
   const token = jwt.sign(
-    { id: user.id, username: user.username },
+    { id: user.id, username: user.username, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );
@@ -48,5 +46,6 @@ export const loginUserService = async ({ username, password }) => {
     jwt_token: token,
     userId: user.id,
     username: user.username,
+    role: user.role,
   };
 };

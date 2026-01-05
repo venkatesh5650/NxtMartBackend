@@ -11,6 +11,8 @@ const __dirname = path.dirname(__filename);
 // SQLite file path (works both locally and on deployment platforms)
 const dbPath = path.join(__dirname, "Products.db");
 
+console.log("🔥 ACTUAL DB PATH:", dbPath);
+
 // Initialize a shared SQLite connection
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
