@@ -4,11 +4,11 @@ import * as controller from "../controllers/admin.products.controller.js";
 
 const router = express.Router();
 
-router.use(requireRole("ADMIN"));
+router.use(requireRole("ADMIN", "DEMO_ADMIN"));
 
-router.get("/", controller.listProducts);
-router.post("/", controller.create);
-router.put("/:id", controller.update);
-router.patch("/:id/toggle", controller.toggle);
+router.get("/", requireRole("ADMIN", "DEMO_ADMIN"), controller.listProducts);
+router.post("/", requireRole("ADMIN"), controller.create);
+router.put("/:id", requireRole("ADMIN"), controller.update);
+router.patch("/:id/toggle", requireRole("ADMIN"), controller.toggle);
 
 export default router;

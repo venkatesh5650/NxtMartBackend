@@ -4,15 +4,21 @@ import requireRole from "../middleware/requireRole.js";
 import {
   getAllOrders,
   getAdminOrderDetails,
-  adminUpdateStatus
+  adminUpdateStatus,
 } from "../controllers/admin.orders.controller.js";
 
 const router = express.Router();
 
-router.use(auth, requireRole("ADMIN"));
+router.use(auth, requireRole("ADMIN", "DEMO_ADMIN"));
 
-router.get("/orders", getAllOrders);
-router.get("/orders/:id", getAdminOrderDetails);
-router.put("/orders/:id/status", adminUpdateStatus);
+router.get("/orders", auth, requireRole("ADMIN", "DEMO_ADMIN"), getAllOrders);
+router.get(
+  "/orders/:id",
+  auth,
+  requireRole("ADMIN", "DEMO_ADMIN"),
+  getAdminOrderDetails
+);
+
+router.put("/:id/status", auth, requireRole("ADMIN"), adminUpdateStatus);
 
 export default router;
