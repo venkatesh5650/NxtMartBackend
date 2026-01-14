@@ -14,8 +14,6 @@ export async function getAllOrders(req, res) {
   res.json({ orders });
 }
 
-
-
 export async function getAdminOrderDetails(req, res) {
   try {
     const orderId = Number(req.params.id);
@@ -37,16 +35,15 @@ export async function getAdminOrderDetails(req, res) {
   }
 }
 
-
 export async function adminUpdateStatus(req, res) {
   try {
     const actor = req.user?.role || "SYSTEM";
-    const result = await changeOrderStatus(
-      req.params.id,
-      req.body.status,
-      actor
-    );
-
+    const orderId = Number(req.params.id);
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
+    }
+    const result = await changeOrderStatus(orderId, status, actor);
     res.json({ message: "Updated", ...result });
   } catch (err) {
     if (err.code === "ORDER_NOT_FOUND") {
