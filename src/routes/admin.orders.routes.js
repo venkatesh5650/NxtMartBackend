@@ -19,6 +19,6 @@ router.get(
   getAdminOrderDetails
 );
 
-router.put("/:id/status", auth, requireRole("ADMIN"), adminUpdateStatus);
+router.put("/orders/:id/status", auth, requireRole("ADMIN"), adminUpdateStatus);
 
 export default router;
